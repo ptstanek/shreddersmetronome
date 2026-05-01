@@ -1,27 +1,22 @@
 <script setup>
 import { ref } from 'vue';
+import { Timer } from './Timer';
 
 var playing = ref(false);
-var audioObject = null;
-var timerID = null;
 var bpm = ref(90); // default value of 90 BPM. 
+
+const audioObject = new Audio("/click.mp3");
+const t = new Timer(() => {audioObject.play()}, parseInt(60000 / bpm.value));
 
 function togglePlaying() {
     playing.value = !playing.value;
-
     if (playing.value) {
-        audioObject = new Audio("/click.mp3");
-        timerID = setInterval(() => { audioObject.play() }, parseInt(60000 / bpm.value)); // this formula gives us the BPM interval in milliseconds. 
-        console.log(`${parseInt(60000 / bpm.value)}`);
+        t.start();
     }
-
-    if (!playing.value) {
-        audioObject = null;
-        clearInterval(timerID);
-        timerID = null;
+    else {
+        t.stop();
     }
 }
-
 </script>
 
 <template>
@@ -53,6 +48,7 @@ h1 {
     flex-direction: column;
 
     padding: 10px;
+    padding-bottom: 20px;
 
     border-radius: 15px;
     border-style: solid;
@@ -60,7 +56,7 @@ h1 {
     border-color: #3b3b3b;
     background-color: #ffffff;
 
-    filter: drop-shadow(12px 11px 28px #000000);
+    box-shadow: 6px 12px 20px 0px #000;
     /* font-family: 'PixelSix00', sans-serif; /* only gonna use this font for the timer components */
 }
 

@@ -1,11 +1,10 @@
 <script setup>
-
 </script>
 
 <template>
     <div className="pagefooter">
         <p>&copy; <i>Patrick Stanek</i>, {{ new Date().getFullYear() }}</p>
-        <a href="github.com/ptstanek">[ Github Profile ] </a>
+        <a href="https://github.com/ptstanek">[ Github Profile ] </a>
     </div>
 </template>
 
@@ -17,7 +16,7 @@
     margin: auto;
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
-    padding-top: 10px;
+    padding-top: 13px;
     text-decoration: none;
 }
 
