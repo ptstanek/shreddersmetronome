@@ -5,7 +5,7 @@ import { Timer } from './Timer';
 var playing = ref(false);
 var bpm = ref(90); // default value of 90 BPM. 
 
-const audioObject = new Audio("/click.mp3");
+const audioObject = new Audio("/audio/click.mp3");
 const t = new Timer(() => {audioObject.play()}, parseInt(60000 / bpm.value));
 
 function togglePlaying() {
@@ -139,6 +139,7 @@ button {
         width: 95%;
         border-style: none;
         filter: none;
+        box-shadow: none;
     }
 }
 </style>
