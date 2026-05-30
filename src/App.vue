@@ -1,16 +1,42 @@
 <script setup>
-import Metronome from './Metronome.vue';
-import PageFooter from './PageFooter.vue';
+import { watch } from "vue";
+import PageFooter from "./PageFooter.vue";
+import { useSettings } from "./useSettings";
+
+const settings = useSettings();
+
+watch(
+    () => settings.value.darkMode,
+    (isDark) => {
+        if (isDark) {
+            document.body.classList.add("dark-mode");
+        } else {
+            document.body.classList.remove("dark-mode");
+        }
+    },
+    { immediate: true }, // Add this!
+);
 </script>
 
 <template>
-  <Metronome />
-  <PageFooter />
+    <RouterView />
+    <PageFooter />
 </template>
 
-<style scoped>
+<style>
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+}
+
+body.dark-mode {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+}
+
 body {
-  padding-top: 50px;
-  background-color: #faf7ff; /* almost white */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding-top: 50px;
 }
 </style>

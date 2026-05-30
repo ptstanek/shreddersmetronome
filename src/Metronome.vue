@@ -1,22 +1,37 @@
 <script setup>
-import { ref } from 'vue';
-import { Timer } from './Timer';
+import { ref } from "vue";
+import { Timer } from "./Timer";
+import { useSettings } from "./useSettings";
+import { useRouter } from "vue-router";
 
-var playing = ref(false);
-var bpm = ref(90); // default value of 90 BPM. 
+const playing = ref(false);
+const bpm = ref(90); // default value of 90 BPM.
+
+const settings = useSettings();
+const router = useRouter();
 
 const audioObject = new Audio("/audio/click.mp3");
-const t = new Timer(() => {audioObject.play()}, parseInt(60000 / bpm.value));
+// audioObject.volume = parseInt(settings.volume);
+
+const t = new Timer(
+    () => {
+        audioObject.play();
+    },
+    parseInt(60000 / bpm.value),
+);
 
 function togglePlaying() {
     playing.value = !playing.value;
     if (playing.value) {
         t.start();
-    }
-    else {
+    } else {
         t.stop();
     }
 }
+
+const goToSettings = () => {
+    router.push("/settings");
+};
 </script>
 
 <template>
@@ -24,14 +39,22 @@ function togglePlaying() {
         <h1>Shredder's Metronome</h1>
         <input v-model="bpm" />
         <button class="button-8" role="button" @click="togglePlaying">
-            {{ playing ? 'Stop' : 'Start' }}
+            {{ playing ? "Stop" : "Start" }}
+        </button>
+        <button
+            class="button-8"
+            role="button"
+            @click="goToSettings"
+            style="font-size: 1em; margin-top: 10px; background-color: #dadada"
+        >
+            Settings
         </button>
     </div>
 </template>
 
 <style scoped>
-@import url('https://fonts.cdnfonts.com/css/pixelsix');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.cdnfonts.com/css/pixelsix");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 h1 {
     margin-left: auto;
@@ -54,14 +77,13 @@ h1 {
     border-style: solid;
     border-width: 2px;
     border-color: #3b3b3b;
-    background-color: #ffffff;
 
     box-shadow: 6px 12px 20px 0px #000;
     /* font-family: 'PixelSix00', sans-serif; /* only gonna use this font for the timer components */
 }
 
 input {
-    font-family: 'PixelSix00', sans-serif;
+    font-family: "PixelSix00", sans-serif;
     font-size: 3em;
     border-style: solid;
     border-width: 2px;
@@ -96,18 +118,19 @@ button {
     background-color: #e1ecf4;
     border-radius: 3px;
     border: 1px solid #7aa7c7;
-    box-shadow: rgba(255, 255, 255, .7) 0 1px 0 0 inset;
+    box-shadow: rgba(255, 255, 255, 0.7) 0 1px 0 0 inset;
     box-sizing: border-box;
     color: #39739d;
     cursor: pointer;
     display: inline-block;
-    font-family: -apple-system, system-ui, "Segoe UI", "Liberation Sans", sans-serif;
+    font-family:
+        -apple-system, system-ui, "Segoe UI", "Liberation Sans", sans-serif;
     font-size: 2.5em;
     font-weight: 400;
     line-height: 1.15385;
     margin: 0;
     outline: none;
-    padding: 8px .8em;
+    padding: 8px 0.8em;
     position: relative;
     text-align: center;
     text-decoration: none;
@@ -125,7 +148,7 @@ button {
 }
 
 .button-8:focus {
-    box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
+    box-shadow: 0 0 0 4px rgba(0, 149, 255, 0.15);
 }
 
 .button-8:active {
