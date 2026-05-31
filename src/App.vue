@@ -14,7 +14,7 @@ watch(
             document.body.classList.remove("dark-mode");
         }
     },
-    { immediate: true }, // Add this!
+    { immediate: true },
 );
 </script>
 
@@ -37,6 +37,6 @@ body.dark-mode {
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    padding-top: 50px;
+    padding-top: 10px;
 }
 </style>

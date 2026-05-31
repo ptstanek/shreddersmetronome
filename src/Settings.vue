@@ -19,6 +19,19 @@ const goToMetronome = () => {
                 <input type="checkbox" v-model="settings.darkMode" />
                 Dark Mode
             </label>
+            <label
+                for="volumeslider"
+                style="padding-top: 1em; justify-self: left"
+            >
+                Volume
+            </label>
+            <input
+                type="range"
+                id="volunmeslider"
+                v-model="settings.volume"
+                min="0"
+                max="100"
+            />
             <button
                 class="button-8"
                 role="button"
@@ -56,11 +69,32 @@ h1 {
 }
 
 input[type="checkbox"] {
+    /* */
     font-family: "Noto Sans", sans-serif;
     width: 20px;
     height: 20px;
     padding-right: 10px;
     margin-right: 10px;
+    border-radius: 20px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #ffffff;
+    border: 1px solid #7aa7c7;
+}
+
+input[type="checkbox"]:checked {
+    width: 20px;
+    height: 20px;
+    padding-right: 10px;
+    margin-right: 10px;
+    border-radius: 20px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #ffffff;
+    box-shadow: inset 1em 1em var(--text-color);
+    border: 1px solid #7aa7c7;
 }
 
 label {
@@ -68,6 +102,7 @@ label {
     font-size: 1.2em;
     display: flex;
     align-items: center;
+    user-select: none;
 }
 
 @media only screen and (max-width: 600px) {

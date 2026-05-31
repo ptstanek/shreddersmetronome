@@ -11,7 +11,7 @@ const settings = useSettings();
 const router = useRouter();
 
 const audioObject = new Audio("/audio/click.mp3");
-// audioObject.volume = parseInt(settings.volume);
+audioObject.volume = parseInt(settings.value.volume) / 100;
 
 const t = new Timer(
     () => {
@@ -30,6 +30,9 @@ function togglePlaying() {
 }
 
 const goToSettings = () => {
+    if (playing.value) {
+        togglePlaying();
+    }
     router.push("/settings");
 };
 </script>
