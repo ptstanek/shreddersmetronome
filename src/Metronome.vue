@@ -1,33 +1,60 @@
 <script setup>
-import { ref } from "vue";
-import { Timer } from "./Timer";
+import { onMounted, ref } from "vue";
 import { useSettings } from "./useSettings";
 import { useRouter } from "vue-router";
 
 const playing = ref(false);
 const bpm = ref(90); // default value of 90 BPM.
+const timerID = ref(null);
 
 const settings = useSettings();
 const router = useRouter();
 
-const audioObject = new Audio("/audio/click.mp3");
-audioObject.volume = parseInt(settings.value.volume) / 100;
+let audioBuffer;
+let audioContext;
 
-const t = new Timer(
-    () => {
-        audioObject.play();
-    },
-    parseInt(60000 / bpm.value),
-);
+onMounted(async () => {
+    // loading the click file.
+    try {
+        const audioFileResponse = await fetch("audio/click.mp3");
 
-function togglePlaying() {
-    playing.value = !playing.value;
-    if (playing.value) {
-        t.start();
-    } else {
-        t.stop();
+        if (!audioFileResponse.ok) {
+            throw new Error(`error - ${audioFileResponse.status}`);
+        }
+
+        const arrayBuffer = await audioFileResponse.arrayBuffer();
+
+        audioContext = new AudioContext();
+        audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+        console.log("AUDIO CONTEXT:", audioContext);
+        console.log("AUDIO BUFFER:", audioBuffer);
+
     }
+    catch (err) {
+        console.log(`${err} - couldn't fetch click file.`);
+    }
+});
+
+const click = () => {
+    let clickSource = audioContext.createBufferSource();
+    clickSource.buffer = audioBuffer;
+    clickSource.connect(audioContext.destination);
+
+    clickSource.start();
 }
+
+const togglePlaying = () => {
+    playing.value = !playing.value;
+
+    if(playing.value) { 
+        timerID.value = setInterval(click, parseInt(60000 / bpm.value));
+    }
+
+    if (!playing.value) {
+        clearInterval(timerID.value);
+    }
+};
 
 const goToSettings = () => {
     if (playing.value) {
@@ -44,12 +71,8 @@ const goToSettings = () => {
         <button class="button-8" role="button" @click="togglePlaying">
             {{ playing ? "Stop" : "Start" }}
         </button>
-        <button
-            class="button-8"
-            role="button"
-            @click="goToSettings"
-            style="font-size: 1em; margin-top: 10px; background-color: #dadada"
-        >
+        <button class="button-8" role="button" @click="goToSettings"
+            style="font-size: 1em; margin-top: 10px; background-color: #dadada">
             Settings
         </button>
     </div>

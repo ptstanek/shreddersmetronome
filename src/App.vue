@@ -38,5 +38,6 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     padding-top: 10px;
+    overflow: hidden;
 }
 </style>
