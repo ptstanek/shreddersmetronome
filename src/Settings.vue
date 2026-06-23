@@ -27,7 +27,7 @@ const goToMetronome = () => {
             </label>
             <input
                 type="range"
-                id="volunmeslider"
+                id="volumeslider"
                 v-model="settings.volume"
                 min="0"
                 max="100"

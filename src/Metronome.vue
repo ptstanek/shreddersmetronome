@@ -11,7 +11,8 @@ const settings = useSettings();
 const router = useRouter();
 
 let audioBuffer;
-let audioContext;
+const audioContext = new AudioContext();
+const gainNode = audioContext.createGain();
 
 onMounted(async () => {
     // loading the click file.
@@ -24,12 +25,10 @@ onMounted(async () => {
 
         const arrayBuffer = await audioFileResponse.arrayBuffer();
 
-        audioContext = new AudioContext();
         audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
         console.log("AUDIO CONTEXT:", audioContext);
         console.log("AUDIO BUFFER:", audioBuffer);
-
     }
     catch (err) {
         console.log(`${err} - couldn't fetch click file.`);
@@ -39,7 +38,12 @@ onMounted(async () => {
 const click = () => {
     let clickSource = audioContext.createBufferSource();
     clickSource.buffer = audioBuffer;
-    clickSource.connect(audioContext.destination);
+
+    console.log(`CLICK -> ${settings.volume}`);
+
+    // Imagine these are like nodes on a graph    
+    clickSource.connect(gainNode); 
+    gainNode.connect(audioContext.destination);
 
     clickSource.start();
 }
@@ -47,11 +51,12 @@ const click = () => {
 const togglePlaying = () => {
     playing.value = !playing.value;
 
+    gainNode.gain.setValueAtTime(parseFloat(settings.value.volume / 100), audioContext.currentTime); // setting the gain
+
     if(playing.value) { 
         timerID.value = setInterval(click, parseInt(60000 / bpm.value));
     }
-
-    if (!playing.value) {
+    else {
         clearInterval(timerID.value);
     }
 };
