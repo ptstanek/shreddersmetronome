@@ -2,6 +2,11 @@
 import { onMounted, ref } from "vue";
 import { useSettings } from "./useSettings";
 import { useRouter } from "vue-router";
+import LCD from "./LCD.vue";
+import Stopwatch from "./Stopwatch.js";
+
+const stopwatch = new Stopwatch();
+const stopwatchID = ref(null);
 
 const playing = ref(false);
 const bpm = ref(90); // default value of 90 BPM.
@@ -39,7 +44,7 @@ const click = () => {
     let clickSource = audioContext.createBufferSource();
     clickSource.buffer = audioBuffer;
 
-    console.log(`CLICK -> ${settings.volume}`);
+    // console.log(`CLICK -> ${parseInt(settings.value.volume)}`);
 
     // Imagine these are like nodes on a graph    
     clickSource.connect(gainNode); 
@@ -55,9 +60,11 @@ const togglePlaying = () => {
 
     if(playing.value) { 
         timerID.value = setInterval(click, parseInt(60000 / bpm.value));
+        stopwatchID.value = setInterval(() => stopwatch.tick(), 1000); // increment stopwatch every second 
     }
     else {
         clearInterval(timerID.value);
+        clearInterval(stopwatchID.value);
     }
 };
 
@@ -67,12 +74,14 @@ const goToSettings = () => {
     }
     router.push("/settings");
 };
+
 </script>
 
 <template>
     <div class="metronomecontainer">
         <h1>Shredder's Metronome</h1>
         <input v-model="bpm" />
+        <LCD :text="stopwatch.getFormattedTime()" style="margin-bottom:5px;"/>
         <button class="button-8" role="button" @click="togglePlaying">
             {{ playing ? "Stop" : "Start" }}
         </button>
@@ -84,8 +93,6 @@ const goToSettings = () => {
 </template>
 
 <style scoped>
-@import url("https://fonts.cdnfonts.com/css/pixelsix");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 h1 {
     margin-left: auto;
@@ -179,7 +186,7 @@ button {
 }
 
 .button-8:focus {
-    box-shadow: 0 0 0 4px rgba(0, 149, 255, 0.15);
+    /* box-shadow: 0 0 0 4px rgba(0, 149, 255, 0.15); */
 }
 
 .button-8:active {

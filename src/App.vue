@@ -24,6 +24,9 @@ watch(
 </template>
 
 <style>
+@import url("https://fonts.cdnfonts.com/css/pixelsix");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
 :root {
     --bg-color: #ffffff;
     --text-color: #000000;
