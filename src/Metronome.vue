@@ -20,6 +20,9 @@ const audioContext = new AudioContext();
 const gainNode = audioContext.createGain();
 
 onMounted(async () => {
+    // retrieving the saved stopwatch data (if any is there)
+    stopwatch.retrieveFromLocalStorage();
+
     // loading the click file.
     try {
         const audioFileResponse = await fetch("audio/click.mp3");
@@ -38,9 +41,6 @@ onMounted(async () => {
     catch (err) {
         console.log(`${err} - couldn't fetch click file.`);
     }
-
-    // retrieving the saved stopwatch data (if any is there)
-    stopwatch.retrieveFromLocalStorage();
 
 });
 

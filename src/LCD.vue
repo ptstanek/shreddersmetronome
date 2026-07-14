@@ -31,5 +31,6 @@ p {
     margin: auto;
     font-family: 'PixelSix10';
     color: #000000;
+    text-shadow: 1px 1px 2px red;
 }
 </style>

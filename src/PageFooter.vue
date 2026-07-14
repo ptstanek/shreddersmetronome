@@ -5,6 +5,7 @@
     <div className="pagefooter">
         <p>&copy; <i>Patrick Stanek</i>, {{ new Date().getFullYear() }}</p>
         <a href="https://github.com/ptstanek">[ Github Profile ] </a>
+        <p>[ https://github.com/ptstanek/sheddersmetronome ]</p>
     </div>
 </template>
 
