@@ -38,6 +38,10 @@ onMounted(async () => {
     catch (err) {
         console.log(`${err} - couldn't fetch click file.`);
     }
+
+    // retrieving the saved stopwatch data (if any is there)
+    stopwatch.retrieveFromLocalStorage();
+
 });
 
 const click = () => {
@@ -65,6 +69,7 @@ const togglePlaying = () => {
     else {
         clearInterval(timerID.value);
         clearInterval(stopwatchID.value);
+        stopwatch.save(); // save stopwatch values
     }
 };
 
