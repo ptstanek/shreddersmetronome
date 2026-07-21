@@ -18,7 +18,7 @@ export default class Stopwatch {
 
         // check if the minutes value is less than 10 and add a leading zero
         if(this.minutes.value < 10) { fMinutes = "0" + this.minutes.value.toString() }
-        else { fMinutes = "0" + this.minutes.value };
+        else { fMinutes = this.minutes.value };
 
         return `${fMinutes}:${fSeconds}`;
 
@@ -26,30 +26,36 @@ export default class Stopwatch {
     }
 
     tick() {
-        if(this.seconds.value === 59) {
+        if(this.seconds.value >= 59) {
             this.seconds.value = 0;
             this.minutes.value++;
         }
         else { 
             this.seconds.value++; 
         }
-        if(this.minutes.value === 59) {
-            this.minutes.value = 0; 
+        if(this.minutes.value >= 59) {
+            this.minutes.value++; 
+            // TODO: hours
             // this.hours.value++;
         }
         // console.log("!!!! TICK !!!!");
     }
     
     save() {
-        localStorage.setItem("time", this.getTotalSeconds().toString());
+        localStorage.setItem("timeSeconds", this.seconds.value.toString())
+        localStorage.setItem("timeMinutes", this.minutes.value.toString())
     }
 
-    set(newSeconds) {
+    set(newSeconds, newMinutes) {
+        localStorage.setItem("timeSeconds", newSeconds);
+        localStorage.setItem("timeMinutes", newMinutes);
+        this.minutes.value = newMinutes;
         this.seconds.value = newSeconds;
     }
 
     retrieveFromLocalStorage() {
-        this.seconds.value = parseInt(localStorage.getItem("time"));
+        this.seconds.value = parseInt(localStorage.getItem("timeSeconds"));
+        this.minutes.value = parseInt(localStorage.getItem("timeMinutes"));
     }
 
     getTotalSeconds() {

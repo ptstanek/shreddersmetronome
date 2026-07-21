@@ -51,7 +51,7 @@ const click = () => {
     // console.log(`CLICK -> ${parseInt(settings.value.volume)}`);
 
     // Imagine these are like nodes on a graph    
-    clickSource.connect(gainNode); 
+    clickSource.connect(gainNode);
     gainNode.connect(audioContext.destination);
 
     clickSource.start();
@@ -62,7 +62,7 @@ const togglePlaying = () => {
 
     gainNode.gain.setValueAtTime(parseFloat(settings.value.volume / 100), audioContext.currentTime); // setting the gain
 
-    if(playing.value) { 
+    if (playing.value) {
         timerID.value = setInterval(click, parseInt(60000 / bpm.value));
         stopwatchID.value = setInterval(() => stopwatch.tick(), 1000); // increment stopwatch every second 
     }
@@ -81,14 +81,17 @@ const goToSettings = () => {
 };
 
 </script>
-
 <template>
     <div class="metronomecontainer">
         <h1>Shredder's Metronome</h1>
         <input v-model="bpm" />
-        <LCD :text="stopwatch.getFormattedTime()" style="margin-bottom:5px;"/>
+        <LCD :text="stopwatch.getFormattedTime()" style="margin-bottom:5px;" />
         <button class="button-8" role="button" @click="togglePlaying">
             {{ playing ? "Stop" : "Start" }}
+        </button>
+        <button class="button-8" role="button" @click="stopwatch.set(0, 0)"
+            style="font-size: 1em; margin-top: 10px; background-color: #db7d80; color: #ffffff">
+            Clear timer
         </button>
         <button class="button-8" role="button" @click="goToSettings"
             style="font-size: 1em; margin-top: 10px; background-color: #dadada">
@@ -98,7 +101,6 @@ const goToSettings = () => {
 </template>
 
 <style scoped>
-
 h1 {
     margin-left: auto;
     margin-right: auto;
@@ -130,7 +132,6 @@ input {
     font-size: 3em;
     border-style: solid;
     border-width: 2px;
-    border-radius: 10px;
     justify-content: center;
     text-align: center;
     margin-top: 10px;
@@ -141,6 +142,7 @@ h1 {
     font-family: "Noto Sans", sans-serif;
     font-size: 2em;
 }
+/*
 
 button {
     border-radius: 20px;
@@ -154,51 +156,7 @@ button {
 
     color: #ffffff;
 }
-
-/* CSS */
-/* stack overflow's button style */
-.button-8 {
-    background-color: #e1ecf4;
-    border-radius: 3px;
-    border: 1px solid #7aa7c7;
-    box-shadow: rgba(255, 255, 255, 0.7) 0 1px 0 0 inset;
-    box-sizing: border-box;
-    color: #39739d;
-    cursor: pointer;
-    display: inline-block;
-    font-family:
-        -apple-system, system-ui, "Segoe UI", "Liberation Sans", sans-serif;
-    font-size: 2.5em;
-    font-weight: 400;
-    line-height: 1.15385;
-    margin: 0;
-    outline: none;
-    padding: 8px 0.8em;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    vertical-align: baseline;
-    white-space: nowrap;
-}
-
-.button-8:hover,
-.button-8:focus {
-    background-color: #b3d3ea;
-    color: #2c5777;
-}
-
-.button-8:focus {
-    /* box-shadow: 0 0 0 4px rgba(0, 149, 255, 0.15); */
-}
-
-.button-8:active {
-    background-color: #a0c7e4;
-    box-shadow: none;
-    color: #2c5777;
-}
+*/
 
 @media only screen and (max-width: 600px) {
     .metronomecontainer {
