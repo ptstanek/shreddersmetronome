@@ -46,24 +46,4 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
-  test: {
-    projects : [ 
-      {
-        test: {
-          include: [
-            'tests/*.{test,spec}.js'
-          ],
-          name: 'browser',
-          browser: {
-            enabled: true,
-            provider: playwright(),
-            headless: true,
-            instances: [
-              { browser: 'chromium' },
-            ]
-          }
-        }
-      }
-    ]
-  }
 })
