@@ -54,9 +54,8 @@ export default class Stopwatch {
     }
 
     retrieveFromLocalStorage() {
-        // TODO: CHECK IF THESE KEYS ARE DEFINED BEFORE TRYING TO READ THEM.
-        this.seconds.value = parseInt(localStorage.getItem("timeSeconds"));
-        this.minutes.value = parseInt(localStorage.getItem("timeMinutes"));
+        this.seconds.value = parseInt(localStorage.getItem("timeSeconds") ?? 0);
+        this.minutes.value = parseInt(localStorage.getItem("timeMinutes") ?? 0);
     }
 
     getTotalSeconds() {
