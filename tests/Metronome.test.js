@@ -22,6 +22,17 @@ it('the start button becomes a stop button when pressed', async () => {
     await expect.element(stopButton).toBeInTheDocument();
 });
 
+it('the start button button starts the LCD timer', async () => { 
+    const screen = page.render(Metronome);
+    const startButton = screen.getByText("Start");
+    const lcdElement = screen.getByText('00:00');
+
+    await startButton.click();
+
+    await expect.element(lcdElement).not.toBe('00:00');
+});
+
+
 it('timer module doesnt start with NaN values', async () => {
     const screen = page.render(Metronome);
     const headerText = screen.getByText("00:00");

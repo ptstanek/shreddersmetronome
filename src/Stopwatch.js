@@ -57,9 +57,4 @@ export default class Stopwatch {
         this.seconds.value = parseInt(localStorage.getItem("timeSeconds") ?? 0);
         this.minutes.value = parseInt(localStorage.getItem("timeMinutes") ?? 0);
     }
-
-    getTotalSeconds() {
-        let total = this.seconds.value + (this.minutes.value*60) /* + ((this.hours.value*60)*60); */;
-        return total;
-    }
 }
